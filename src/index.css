@@ -1,0 +1,9 @@
+body {
+  margin: 0;
+  min-width: 320px;
+  background: #091321;
+}
+
+#root {
+  min-height: 100svh;
+}
