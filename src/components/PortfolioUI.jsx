@@ -23,7 +23,7 @@ const screens = [
   ['questions-solved', 'Questions Solved'],
   ['about', 'About'],
   ['contact', 'Contact'],
-  
+
 ]
 
 function ScreenHeader({ number, title, onBack }) {
@@ -124,19 +124,26 @@ function ExperienceScreen({ onBack, selectedExperience, onSelectExperience }) {
   )
 }
 
+function getStats(forceSync = false, signal) {
+  const query = forceSync ? '?forceSync=true' : ''
+
+  return fetch(`/api/coding-stats${query}`, { signal })
+    .then((response) => {
+      if (!response.ok) throw new Error('Statistics unavailable')
+      return response.json()
+    })
+}
+
 function QuestionsSolvedScreen({ onBack }) {
   const [stats, setStats] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [isSyncing, setIsSyncing] = useState(false)
   const [hasError, setHasError] = useState(false)
 
   useEffect(() => {
     const controller = new AbortController()
 
-    fetch('/api/coding-stats', { signal: controller.signal })
-      .then((response) => {
-        if (!response.ok) throw new Error('Statistics unavailable')
-        return response.json()
-      })
+    getStats(false, controller.signal)
       .then((data) => {
         setStats(data)
         setHasError(Boolean(data.errors))
@@ -149,11 +156,28 @@ function QuestionsSolvedScreen({ onBack }) {
     return () => controller.abort()
   }, [])
 
+  const handleSync = () => {
+    setIsSyncing(true)
+
+    getStats(true)
+      .then((data) => {
+        setStats(data)
+        setHasError(Boolean(data.errors))
+      })
+      .catch(() => setHasError(true))
+      .finally(() => setIsSyncing(false))
+  }
+
   const value = (platform, key = 'total') => stats?.[platform]?.[key] ?? 0
 
   return (
     <div className="questions-solved-screen">
-      <ScreenHeader number="08" title="QUESTIONS SOLVED" onBack={onBack} />
+      <div className="stats-heading">
+        <ScreenHeader number="08" title="QUESTIONS SOLVED" onBack={onBack} />
+        <button type="button" className="stats-sync" onClick={handleSync} disabled={isLoading || isSyncing} title="Sync live statistics" aria-label="Sync live statistics">
+          {isSyncing ? '...' : '↻'}
+        </button>
+      </div>
       {isLoading ? <p className="stats-loading">SYNCING...</p> : (
         <>
           <div className="stats-total-label">TOTAL QUESTIONS</div>
@@ -186,7 +210,7 @@ function SimpleScreen({ id, onBack }) {
     ? <div className="contact-links"><a href="https://www.linkedin.com/in/abhigyandutta/" target="_blank" rel="noreferrer">LinkedIn ↗</a><span>·</span><a href="https://github.com/abhigyan-21" target="_blank" rel="noreferrer">GitHub ↗</a></div>
     : id === 'tech-stack'
       ? <div className="tech-stack-categories">{Object.entries(content.categories).map(([category, items]) => <div key={category}><strong>{categoryLabels[category]}</strong><p>{items.join(' · ')}</p></div>)}</div>
-    : <strong>{content.highlight}</strong>
+      : <strong>{content.highlight}</strong>
 
   return <div className="portfolio-simple"><ScreenHeader number={content.number} title={content.title} onBack={onBack} />{content.description && <p>{content.description}</p>}{highlight}<button type="button" onClick={onBack}>‹ HOME</button></div>
 }

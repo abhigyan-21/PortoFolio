@@ -832,6 +832,11 @@ h1 {
 .contact-links a { text-decoration: underline; }
 .portfolio-simple button { margin-top: 12px; font-weight: 700; }
 .questions-solved-screen { font-size: 5px; }
+.stats-heading { display: flex; align-items: center; justify-content: space-between; gap: 5px; }
+.stats-heading .portfolio-screen-header { flex: 1; }
+.stats-sync { width: 16px; height: 16px; padding: 0; border: 1px solid rgba(23, 34, 26, .55); color: inherit; background: transparent; cursor: pointer; font: 700 9px/1 'IBM Plex Mono', monospace; }
+.stats-sync:hover:not(:disabled), .stats-sync:focus-visible { background: rgba(23, 34, 26, .12); }
+.stats-sync:disabled { cursor: wait; opacity: .45; }
 .stats-loading { margin: 14px 0; text-align: center; }
 .stats-total-label { margin-top: 8px; font-size: 5px; font-weight: 700; text-align: center; }
 .stats-total { display: block; margin: 2px 0 8px; font-size: 13px; text-align: center; }
