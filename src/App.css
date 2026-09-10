@@ -227,7 +227,7 @@ a {
 
 .scene-art {
   z-index: 0;
-  background: url('./assets/portfolio_desktopbg.png') center / cover no-repeat;
+  background: url('./assets/portfolio_desktopbg.webp') center / cover no-repeat;
   filter: brightness(1) blur(0);
   image-rendering: auto;
 }
@@ -747,7 +747,7 @@ h1 {
   }
 
   .scene-art {
-    background-image: url('./assets/porfolio_mobilebg.png');
+    background-image: url('./assets/porfolio_mobilebg.webp');
     background-size: 100% 100%;
   }
 
