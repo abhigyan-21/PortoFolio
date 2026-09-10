@@ -831,3 +831,12 @@ h1 {
 .contact-links { display: flex; gap: 3px; align-items: center; font-weight: 700; }
 .contact-links a { text-decoration: underline; }
 .portfolio-simple button { margin-top: 12px; font-weight: 700; }
+.questions-solved-screen { font-size: 5px; }
+.stats-loading { margin: 14px 0; text-align: center; }
+.stats-total-label { margin-top: 8px; font-size: 5px; font-weight: 700; text-align: center; }
+.stats-total { display: block; margin: 2px 0 8px; font-size: 13px; text-align: center; }
+.stats-platforms { display: grid; gap: 3px; }
+.stats-platforms div { display: flex; justify-content: space-between; border-bottom: 1px dotted rgba(23, 34, 26, .35); }
+.stats-platforms b { font-weight: 700; }
+.stats-status { margin: 7px 0 0; font-size: 4px; opacity: .7; text-align: center; }
+.questions-solved-screen > button { margin-top: 8px; padding: 0; border: 0; background: none; cursor: pointer; font: inherit; font-weight: 700; }

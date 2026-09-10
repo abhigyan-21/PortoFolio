@@ -20,8 +20,10 @@ const screens = [
   ['tech-stack', 'Tech Stack'],
   ['experience', 'Experience'],
   ['certifications', 'Certifications'],
+  ['questions-solved', 'Questions Solved'],
   ['about', 'About'],
   ['contact', 'Contact'],
+  
 ]
 
 function ScreenHeader({ number, title, onBack }) {
@@ -118,6 +120,54 @@ function ExperienceScreen({ onBack, selectedExperience, onSelectExperience }) {
     <div className="portfolio-list">
       <ScreenHeader number="04" title="EXPERIENCE" onBack={onBack} />
       {experience.map((item) => <button key={item.id} type="button" onClick={() => onSelectExperience(item.id)}><b>›</b><span>{item.title}<small>{item.duration}</small></span></button>)}
+    </div>
+  )
+}
+
+function QuestionsSolvedScreen({ onBack }) {
+  const [stats, setStats] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [hasError, setHasError] = useState(false)
+
+  useEffect(() => {
+    const controller = new AbortController()
+
+    fetch('/api/coding-stats', { signal: controller.signal })
+      .then((response) => {
+        if (!response.ok) throw new Error('Statistics unavailable')
+        return response.json()
+      })
+      .then((data) => {
+        setStats(data)
+        setHasError(Boolean(data.errors))
+      })
+      .catch((error) => {
+        if (error.name !== 'AbortError') setHasError(true)
+      })
+      .finally(() => setIsLoading(false))
+
+    return () => controller.abort()
+  }, [])
+
+  const value = (platform, key = 'total') => stats?.[platform]?.[key] ?? 0
+
+  return (
+    <div className="questions-solved-screen">
+      <ScreenHeader number="08" title="QUESTIONS SOLVED" onBack={onBack} />
+      {isLoading ? <p className="stats-loading">SYNCING...</p> : (
+        <>
+          <div className="stats-total-label">TOTAL QUESTIONS</div>
+          <strong className="stats-total">{stats?.totalSolved ?? 0}+</strong>
+          <div className="stats-platforms">
+            <div><span>LEETCODE</span><b>{value('leetcode')}</b></div>
+            <div><span>GFG</span><b>{value('gfg')}</b></div>
+            <div><span>CODECHEF</span><b>{stats?.codechef ?? 0}</b></div>
+            <div><span>HACKERRANK</span><b>{stats?.hackerrank ?? 0}</b></div>
+          </div>
+          {hasError && <p className="stats-status">LIVE DATA PARTIAL</p>}
+        </>
+      )}
+      <button type="button" onClick={onBack}>‹ HOME</button>
     </div>
   )
 }
@@ -246,6 +296,7 @@ function PortfolioUI() {
     if (activeScreen === 'projects') return <ProjectsScreen onBack={() => { setActiveScreen('home'); setSelectedProject(null) }} selectedProject={selectedProject} onSelectProject={setSelectedProject} />
     if (activeScreen === 'experience') return <ExperienceScreen onBack={() => { setActiveScreen('home'); setSelectedExperience(null) }} selectedExperience={selectedExperience} onSelectExperience={setSelectedExperience} />
     if (activeScreen === 'certifications') return <CertificationsScreen onBack={() => setActiveScreen('home')} />
+    if (activeScreen === 'questions-solved') return <QuestionsSolvedScreen onBack={() => setActiveScreen('home')} />
     return <SimpleScreen id={activeScreen} onBack={() => setActiveScreen('home')} />
   }
 
