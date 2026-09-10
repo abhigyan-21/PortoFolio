@@ -58,7 +58,11 @@ async function fetchLeetCode() {
 
 async function fetchGfg() {
   const params = new URLSearchParams({ handle: GFG_HANDLE, month: '', requestType: '', year: '' })
-  const response = await fetch(`https://practiceapi.geeksforgeeks.org/api/v1/user/problems/submissions/?${params}`)
+  const response = await fetch('https://practiceapi.geeksforgeeks.org/api/v1/user/problems/submissions/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: params,
+  })
 
   if (!response.ok) throw new Error('GFG request failed')
   return normalizeGfg(await response.json())
