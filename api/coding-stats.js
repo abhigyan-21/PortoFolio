@@ -5,41 +5,26 @@ const STATIC_STATS = {
   hackerrank: 2,
 }
 
-const EMPTY_STATS = { total: 0, easy: 0, medium: 0, hard: 0 }
-
-function countEntries(value) {
-  return value && typeof value === 'object' ? Object.keys(value).length : 0
-}
+const EMPTY_STATS = 0
 
 function normalizeLeetCode(payload) {
+  if (!payload?.data?.matchedUser) throw new Error('LeetCode user not found')
+
   const submissions = payload?.data?.matchedUser?.submitStats?.acSubmissionNum
   if (!Array.isArray(submissions)) throw new Error('Invalid LeetCode response')
 
-  const byDifficulty = Object.fromEntries(
-    submissions
-      .filter((entry) => entry && typeof entry.difficulty === 'string')
-      .map((entry) => [entry.difficulty.toLowerCase(), Number(entry.count) || 0]),
-  )
+  const total = submissions.find((entry) => entry?.difficulty === 'All')
+  if (!total) throw new Error('Invalid LeetCode response')
 
-  if (!payload.data.matchedUser) throw new Error('LeetCode user not found')
-
-  return {
-    total: byDifficulty.all || 0,
-    easy: byDifficulty.easy || 0,
-    medium: byDifficulty.medium || 0,
-    hard: byDifficulty.hard || 0,
-  }
+  return Number(total.count) || 0
 }
 
 function normalizeGfg(payload) {
-  if (!payload || typeof payload !== 'object' || !payload.result) throw new Error('Invalid GFG response')
-
-  return {
-    total: Number(payload.count) || 0,
-    easy: countEntries(payload.result.Easy),
-    medium: countEntries(payload.result.Medium),
-    hard: countEntries(payload.result.Hard),
+  if (!payload || typeof payload !== 'object' || payload.count == null || !Number.isFinite(Number(payload.count))) {
+    throw new Error('Invalid GFG response')
   }
+
+  return Number(payload.count) || 0
 }
 
 async function fetchLeetCode() {
@@ -87,7 +72,7 @@ export default async function handler(request, response) {
   if (gfgResult.status === 'rejected') errors.gfg = 'Unable to fetch GFG statistics'
 
   response.status(200).json({
-    totalSolved: leetcode.total + gfg.total + STATIC_STATS.codechef + STATIC_STATS.hackerrank,
+    totalSolved: leetcode + gfg + STATIC_STATS.codechef + STATIC_STATS.hackerrank,
     leetcode,
     gfg,
     codechef: STATIC_STATS.codechef,

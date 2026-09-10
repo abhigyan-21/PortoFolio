@@ -168,7 +168,7 @@ function QuestionsSolvedScreen({ onBack }) {
       .finally(() => setIsSyncing(false))
   }
 
-  const value = (platform, key = 'total') => stats?.[platform]?.[key] ?? 0
+  const value = (platform) => stats?.[platform] ?? 0
 
   return (
     <div className="questions-solved-screen">
