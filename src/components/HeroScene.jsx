@@ -13,7 +13,6 @@ function HeroScene() {
     const stage = stageRef.current
     const scene = stage.querySelector('.scene')
     const deviceLayer = stage.querySelector('.scene-device-layer')
-    const handheld = stage.querySelector('.handheld')
     const sceneArt = stage.querySelector('.scene-art')
     const sceneWall = stage.querySelector('.scene-wall')
     const nameHeading = stage.querySelector('.hero-copy h1')
@@ -50,8 +49,14 @@ function HeroScene() {
           y: () => `${isMobile ? window.innerHeight * 0.04 : window.innerHeight * 0.06}px`,
           duration: 0.9,
         }, 0)
-        .fromTo(handheld, { scale: initialScale }, { scale: finalScale, duration: 1 }, 0)
-        .fromTo(handheldAnchor, { rotation: initialRotation }, { rotation: 0, duration: 1 }, 0)
+        .fromTo(handheldAnchor, {
+          rotation: initialRotation,
+          scale: initialScale,
+        }, {
+          rotation: 0,
+          scale: finalScale,
+          duration: 1,
+        }, 0)
 
       return () => timeline.kill()
     })

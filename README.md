@@ -1,16 +1,57 @@
-# React + Vite
+# Abhigyan Dutta | Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive developer portfolio designed as a retro handheld console. The experience combines a cinematic scene with a compact portfolio interface where visitors can explore projects, experience, certifications, technical skills, and contact details.
 
-Currently, two official plugins are available:
+## Concept
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+The portfolio treats personal work like a playable interface rather than a traditional page of sections. The handheld device acts as the main navigation surface, with buttons, keyboard controls, animated transitions, and optional background music reinforcing the console-inspired concept.
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React 19 for component-based UI and state-driven navigation
+- Vite for local development and production bundling
+- GSAP and ScrollTrigger for scroll-based scene transitions
+- JavaScript and CSS for application logic, responsive layout, animation, and visual styling
+- IBM Plex Mono, Space Grotesk, and Press Start 2P for the retro-futurist typography system
+- ESLint for code quality checks
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Scroll-driven hero scene with responsive desktop and mobile backgrounds
+- Interactive handheld portfolio menu
+- Keyboard and console-style navigation controls
+- Project, experience, and certification list/detail views
+- PDF links for resumes and experience certificates
+- Optional custom background music through `public/music.mp3`
+- Responsive layout for desktop and mobile screens
+
+## Getting Started
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+Create a production build:
+
+```bash
+npm run build
+```
+
+Run lint checks:
+
+```bash
+npm run lint
+```
+
+## Contact
+
+**Name:** Abhigyan Dutta
+**Email:** [abhigyandutta@yahoo.com](mailto:abhigyandutta@yahoo.com)

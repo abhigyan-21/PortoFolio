@@ -1,5 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
+import about from '../data/about'
+import certifications from '../data/certifications'
+import contact from '../data/contact'
+import experience from '../data/expirience'
 import projects from '../data/projects'
+import techStack from '../data/techStack'
+
+const simpleScreens = {
+  'tech-stack': techStack,
+  experience,
+  certifications,
+  about,
+  contact,
+}
 
 const screens = [
   ['home', 'Home'],
@@ -42,14 +55,13 @@ function HomeScreen({ onSelect, selectedIndex }) {
   )
 }
 
-function ProjectsScreen({ onBack }) {
-  const [selected, setSelected] = useState(null)
-  const project = projects.find((item) => item.id === selected)
+function ProjectsScreen({ onBack, selectedProject, onSelectProject }) {
+  const project = projects.find((item) => item.id === selectedProject)
 
   if (project) {
     return (
       <div className="portfolio-detail">
-        <ScreenHeader number="02" title={project.title} onBack={() => setSelected(null)} />
+        <ScreenHeader number="02" title={project.title} onBack={() => onSelectProject(null)} />
         <p className="detail-description">{project.description}</p>
         <span className="detail-year">{project.year}</span>
         <strong>TECHNOLOGIES</strong>
@@ -62,26 +74,69 @@ function ProjectsScreen({ onBack }) {
   return (
     <div className="portfolio-list">
       <ScreenHeader number="02" title="PROJECTS" onBack={onBack} />
-      {projects.map((project) => <button key={project.id} type="button" onClick={() => setSelected(project.id)}><b>›</b><span>{project.title}<small>{project.description}</small></span></button>)}
+      {projects.map((project) => <button key={project.id} type="button" onClick={() => onSelectProject(project.id)}><b>›</b><span>{project.title}<small>{project.description}</small></span></button>)}
+    </div>
+  )
+}
+
+function CertificationsScreen({ onBack, selectedCertification, onSelectCertification }) {
+  const certification = certifications.find((item) => item.id === selectedCertification)
+
+  if (certification) {
+    return (
+      <div className="portfolio-detail">
+        <ScreenHeader number="05" title={certification.title} onBack={() => onSelectCertification(null)} />
+        <strong>CERTIFICATION</strong>
+      </div>
+    )
+  }
+
+  return (
+    <div className="portfolio-list">
+      <ScreenHeader number="05" title="CERTIFICATIONS" onBack={onBack} />
+      {certifications.map((item) => <button key={item.id} type="button" onClick={() => onSelectCertification(item.id)}><b>›</b><span>{item.title}</span></button>)}
+    </div>
+  )
+}
+
+function ExperienceScreen({ onBack, selectedExperience, onSelectExperience }) {
+  const role = experience.find((item) => item.id === selectedExperience)
+
+  if (role) {
+    return (
+      <div className="portfolio-detail">
+        <ScreenHeader number="04" title={role.title} onBack={() => onSelectExperience(null)} />
+        <span className="detail-year">{role.duration}</span>
+        <strong>ABOUT</strong>
+        <p className="detail-description">{role.description}</p>
+        <div className="detail-links"><a href={role.certificate} target="_blank" rel="noreferrer">CERTIFICATE ↗</a></div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="portfolio-list">
+      <ScreenHeader number="04" title="EXPERIENCE" onBack={onBack} />
+      {experience.map((item) => <button key={item.id} type="button" onClick={() => onSelectExperience(item.id)}><b>›</b><span>{item.title}<small>{item.duration}</small></span></button>)}
     </div>
   )
 }
 
 function SimpleScreen({ id, onBack }) {
-  const content = {
-    'tech-stack': ['03', 'TECH STACK', 'Java · Python · React', 'Node.js · MongoDB · Git'],
-    experience: ['04', 'EXPERIENCE', '2025 - Present', 'Software Engineering Intern'],
-    certifications: ['05', 'CERTIFICATIONS', 'AWS Cloud Practitioner', 'Google GenAI Essentials'],
-    about: ['06', 'ABOUT', 'Curious builder who loves', 'turning ideas into useful tools.'],
-    contact: ['07', 'CONTACT', 'hello@example.com', 'LinkedIn · GitHub'],
-  }[id]
+  const content = simpleScreens[id]
+  const highlight = id === 'contact'
+    ? <div className="contact-links"><a href="https://www.linkedin.com/in/abhigyandutta/" target="_blank" rel="noreferrer">LinkedIn ↗</a><span>·</span><a href="https://github.com/abhigyan-21" target="_blank" rel="noreferrer">GitHub ↗</a></div>
+    : <strong>{content.highlight}</strong>
 
-  return <div className="portfolio-simple"><ScreenHeader number={content[0]} title={content[1]} onBack={onBack} /><p>{content[2]}</p><strong>{content[3]}</strong><button type="button" onClick={onBack}>‹ HOME</button></div>
+  return <div className="portfolio-simple"><ScreenHeader number={content.number} title={content.title} onBack={onBack} /><p>{content.description}</p>{highlight}<button type="button" onClick={onBack}>‹ HOME</button></div>
 }
 
 function PortfolioUI() {
   const [activeScreen, setActiveScreen] = useState('home')
   const [selectedIndex, setSelectedIndex] = useState(0)
+  const [selectedProject, setSelectedProject] = useState(null)
+  const [selectedCertification, setSelectedCertification] = useState(null)
+  const [selectedExperience, setSelectedExperience] = useState(null)
   const uiRef = useRef(null)
 
   useEffect(() => {
@@ -100,10 +155,33 @@ function PortfolioUI() {
       setSelectedIndex((index) => (index + direction + screens.length) % screens.length)
     }
 
+    const goBack = () => {
+      if (activeScreen === 'projects' && selectedProject) {
+        setSelectedProject(null)
+        return
+      }
+      if (activeScreen === 'certifications' && selectedCertification) {
+        setSelectedCertification(null)
+        return
+      }
+      if (activeScreen === 'experience' && selectedExperience) {
+        setSelectedExperience(null)
+        return
+      }
+      if (activeScreen !== 'home') setActiveScreen('home')
+    }
+
+    const enterSelectedScreen = () => {
+      if (activeScreen === 'home') setActiveScreen(screens[selectedIndex][0])
+    }
+
     const handleKeyDown = (event) => {
       if (event.key === 'Escape') {
         setActiveScreen('home')
         setSelectedIndex(0)
+        setSelectedProject(null)
+        setSelectedCertification(null)
+        setSelectedExperience(null)
         return
       }
 
@@ -117,18 +195,17 @@ function PortfolioUI() {
         scrollScreen(-1)
         if (activeScreen === 'home') moveSelection(-1)
       }
-      if (activeScreen !== 'home') return
       if (event.key === 'ArrowRight') {
         event.preventDefault()
-        moveSelection(1)
+        enterSelectedScreen()
       }
       if (event.key === 'ArrowLeft') {
         event.preventDefault()
-        moveSelection(-1)
+        goBack()
       }
       if (event.key === 'Enter') {
         event.preventDefault()
-        setActiveScreen(screens[selectedIndex][0])
+        enterSelectedScreen()
       }
     }
     const handleConsoleControl = (event) => {
@@ -136,6 +213,9 @@ function PortfolioUI() {
       if (control === 'b') {
         setActiveScreen('home')
         setSelectedIndex(0)
+        setSelectedProject(null)
+        setSelectedCertification(null)
+        setSelectedExperience(null)
         return
       }
       if (control === 'up') {
@@ -146,10 +226,8 @@ function PortfolioUI() {
         scrollScreen(1)
         if (activeScreen === 'home') moveSelection(1)
       }
-      if (activeScreen !== 'home') return
-      if (control === 'left') moveSelection(-1)
-      if (control === 'right') moveSelection(1)
-      if (control === 'a') setActiveScreen(screens[selectedIndex][0])
+      if (control === 'left') goBack()
+      if (control === 'right' || control === 'a') enterSelectedScreen()
     }
     const ui = uiRef.current
     ui.addEventListener('keydown', handleKeyDown)
@@ -158,11 +236,13 @@ function PortfolioUI() {
       ui.removeEventListener('keydown', handleKeyDown)
       window.removeEventListener('portfolio-control', handleConsoleControl)
     }
-  }, [activeScreen, selectedIndex])
+  }, [activeScreen, selectedIndex, selectedProject, selectedCertification, selectedExperience])
 
   const renderScreen = () => {
     if (activeScreen === 'home') return <HomeScreen onSelect={setActiveScreen} selectedIndex={selectedIndex} />
-    if (activeScreen === 'projects') return <ProjectsScreen onBack={() => setActiveScreen('home')} />
+    if (activeScreen === 'projects') return <ProjectsScreen onBack={() => { setActiveScreen('home'); setSelectedProject(null) }} selectedProject={selectedProject} onSelectProject={setSelectedProject} />
+    if (activeScreen === 'experience') return <ExperienceScreen onBack={() => { setActiveScreen('home'); setSelectedExperience(null) }} selectedExperience={selectedExperience} onSelectExperience={setSelectedExperience} />
+    if (activeScreen === 'certifications') return <CertificationsScreen onBack={() => { setActiveScreen('home'); setSelectedCertification(null) }} selectedCertification={selectedCertification} onSelectCertification={setSelectedCertification} />
     return <SimpleScreen id={activeScreen} onBack={() => setActiveScreen('home')} />
   }
 

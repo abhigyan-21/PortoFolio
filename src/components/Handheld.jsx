@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import PortfolioUI from './PortfolioUI'
 
 function sendConsoleControl(control) {
@@ -5,12 +6,22 @@ function sendConsoleControl(control) {
 }
 
 function Handheld() {
+  const [currentTime, setCurrentTime] = useState(new Date())
+
+  useEffect(() => {
+    const clock = window.setInterval(() => setCurrentTime(new Date()), 1000)
+    return () => window.clearInterval(clock)
+  }, [])
+
+  const dateTime = currentTime.toISOString()
+  const displayTime = `${String(currentTime.getDate()).padStart(2, '0')}/${String(currentTime.getMonth() + 1).padStart(2, '0')} ${String(currentTime.getHours()).padStart(2, '0')}:${String(currentTime.getMinutes()).padStart(2, '0')}`
+
   return (
     <div className="handheld" aria-label="Retro handheld portfolio device">
       <div className="console-top-speaker" aria-hidden="true"><i /><i /><i /><i /><i /></div> 
       <span className="console-led" aria-hidden="true" />
       <div className="console-screen">
-        <div className="screen-status"><span>AD</span><span>00.05 V1.0</span><span>◉</span></div>
+        <div className="screen-status"><span>AD</span><span>V1.0</span><time dateTime={dateTime}>{displayTime}</time></div>
         <PortfolioUI />
       </div>
       <div className="console-controls">
