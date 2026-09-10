@@ -261,10 +261,11 @@ a {
 
 .hero-copy {
   position: absolute;
-  z-index: 2;
+  z-index: 4;
   top: 21%;
   left: clamp(36px, 5.5vw, 92px);
-  width: min(390px, 31vw);
+  width: min(390px, calc(100vw - clamp(36px, 5.5vw, 92px) - 32px));
+  max-width: 390px;
 }
 
 .eyebrow,
@@ -283,6 +284,7 @@ a {
 
 h1 {
   margin: 0 0 12px;
+  max-width: 100%;
   color: #f5f8f3;
   font: 400 clamp(27px, 3.45vw, 56px)/1.28 'Press Start 2P', monospace;
   letter-spacing: 0;
