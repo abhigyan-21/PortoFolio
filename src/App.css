@@ -620,14 +620,14 @@ h1 {
 
   .scene-art,
   .scene-device-layer {
-    width: max(100%, 56.25svh);
-    height: auto;
-    aspect-ratio: 936 / 1664;
+    width: min(100%, calc(100svh * .5628));
+    height: 100%;
+    aspect-ratio: 941 / 1672;
   }
 
   .scene-art {
     background-image: url('./assets/porfolio_mobilebg.png');
-    background-size: 100% 100%;
+    background-size: cover;
   }
 
   .scene-wall {
