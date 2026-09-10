@@ -585,6 +585,36 @@ h1 {
     display: none;
   }
 
+  .topbar.is-open {
+    border-radius: 6px;
+  }
+
+  .topbar.is-open .social-links {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 8px;
+    border: 2px solid rgba(128, 164, 204, .32);
+    border-radius: 6px;
+    background: rgba(7, 17, 29, .96);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, .28);
+  }
+
+  .topbar.is-open .social-links a {
+    min-height: 42px;
+    padding: 0 12px;
+  }
+
+  .topbar.is-open .social-links a:hover,
+  .topbar.is-open .social-links a:focus-visible {
+    background: rgba(215, 249, 162, .1);
+  }
+
   .menu-button {
     display: block;
   }
@@ -620,14 +650,14 @@ h1 {
 
   .scene-art,
   .scene-device-layer {
-    width: min(100%, calc(100svh * .5628));
-    height: 100%;
+    width: max(100%, calc(100svh * .5628));
+    height: auto;
     aspect-ratio: 941 / 1672;
   }
 
   .scene-art {
     background-image: url('./assets/porfolio_mobilebg.png');
-    background-size: cover;
+    background-size: 100% 100%;
   }
 
   .scene-wall {

@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 function SocialIcon({ type }) {
   if (type === 'github') return <span aria-hidden="true">◉</span>
   if (type === 'linkedin') return <span aria-hidden="true">in</span>
@@ -6,8 +8,10 @@ function SocialIcon({ type }) {
 }
 
 function Navigation() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
   return (
-    <nav className="topbar" aria-label="Primary navigation">
+    <nav className={`topbar${isMenuOpen ? ' is-open' : ''}`} aria-label="Primary navigation">
       <a className="wordmark" href="#top" aria-label="Back to top">AD</a>
       <div className="social-links">
         <a href="https://github.com/abhigyan-21" target="_blank" rel="noreferrer"><SocialIcon type="github" /><span>GitHub</span></a>
@@ -15,7 +19,15 @@ function Navigation() {
         <a href="mailto:abhigyandutta@yahoo.com"><SocialIcon type="email" /><span>Email</span></a>
         <a href="/resume.pdf"><SocialIcon type="resume" /><span>Resume</span></a>
       </div>
-      <button className="menu-button" type="button" aria-label="Open navigation">☰</button>
+      <button
+        className="menu-button"
+        type="button"
+        aria-label={isMenuOpen ? 'Close navigation' : 'Open navigation'}
+        aria-expanded={isMenuOpen}
+        onClick={() => setIsMenuOpen((open) => !open)}
+      >
+        {isMenuOpen ? '×' : '☰'}
+      </button>
     </nav>
   )
 }

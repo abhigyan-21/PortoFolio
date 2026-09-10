@@ -25,12 +25,12 @@ function HeroScene() {
       const getMobileScale = () => {
         const composition = getCompositionBounds()
         const relativeScale = composition.width * .25 / 155
-        return Math.min(.82, Math.max(.56, relativeScale))
+        return Math.min(1.8, Math.max(.9, relativeScale * 1.85))
       }
       const getMobileStartScale = () => {
         const composition = getCompositionBounds()
         const relativeScale = composition.width * .25 / 155
-        return Math.min(.5, Math.max(.28, relativeScale * .495))
+        return Math.min(.578, Math.max(.357, relativeScale * .578))
       }
       const finalScale = isMobile ? getMobileScale : 2.74
       const initialScale = isMobile ? getMobileStartScale : 1
