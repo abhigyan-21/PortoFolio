@@ -1,13 +1,35 @@
 const certifications = [
 	{
-		id: 'aws-cloud-practitioner',
-		title: 'AWS Cloud Practitioner',
-		certificate: '/certificates/aws-cloud-practitioner.pdf',
+		id: 'zidio-ui-ux',
+		title: 'Zidio UI/UX Design Training',
+		issuer: 'Zidio Development',
+		issued: 'May 2025',
+		credentialId: 'zidio/08562',
+		certificate: null,
 	},
 	{
-		id: 'google-genai-essentials',
-		title: 'Google GenAI Essentials',
-		certificate: '/certificates/google-genai-essentials.pdf',
+		id: 'devtown-frontend',
+		title: 'Dev Town Front End Bootcamp',
+		issuer: 'DevTown',
+		issued: 'June 2025',
+		credentialId: '1GKKun',
+		certificate: null,
+	},
+	{
+		id: 'tata-cybersecurity',
+		title: 'Tata Group - Cybersecurity Analyst Job Simulation',
+		issuer: 'Forage',
+		issued: 'March 2025',
+		credentialId: 'BqjRgTSB4BK5d635R',
+		certificate: null,
+	},
+	{
+		id: 'google-ai-essentials',
+		title: 'Google AI Essentials',
+		issuer: 'Google',
+		issued: 'January 2025',
+		credentialId: 'SFTHYQQLYWY3',
+		certificate: null,
 	},
 ]
 

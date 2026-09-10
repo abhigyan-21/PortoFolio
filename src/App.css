@@ -778,6 +778,8 @@ h1 {
 .home-menu button.is-selected { background: rgba(23, 34, 26, .18); }
 .portfolio-list-link { display: grid; grid-template-columns: 10px 1fr; gap: 2px; margin-bottom: 4px; padding: 1px 0; text-decoration: none; }
 .portfolio-list-link:hover { background: rgba(23, 34, 26, .18); }
+.portfolio-list-link-unavailable { opacity: .62; }
+.portfolio-list-link-unavailable:hover { background: none; }
 .portfolio-list-link b { font-size: 9px; }
 .portfolio-list-link span { font-weight: 700; }
 .portfolio-ui:focus-visible { outline: 1px solid #17221a; outline-offset: -1px; }

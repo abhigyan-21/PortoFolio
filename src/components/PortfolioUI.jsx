@@ -86,7 +86,15 @@ function CertificationsScreen({ onBack }) {
   return (
     <div className="portfolio-list">
       <ScreenHeader number="05" title="CERTIFICATIONS" onBack={onBack} />
-      {certifications.map((item) => <a className="portfolio-list-link" key={item.id} href={item.certificate} target="_blank" rel="noreferrer"><b>›</b><span>{item.title}<small>VIEW CERTIFICATE ↗</small></span></a>)}
+      {certifications.map((item) => {
+        const content = <><b>›</b><span>{item.title}<small>{item.issuer} · {item.issued} · {item.credentialId}</small></span></>
+
+        return item.certificate ? (
+          <a className="portfolio-list-link" key={item.id} href={item.certificate} target="_blank" rel="noreferrer">{content}</a>
+        ) : (
+          <div className="portfolio-list-link portfolio-list-link-unavailable" key={item.id} aria-disabled="true">{content}</div>
+        )
+      })}
     </div>
   )
 }
