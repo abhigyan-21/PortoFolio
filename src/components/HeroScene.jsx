@@ -20,10 +20,30 @@ function HeroScene() {
 
     const media = gsap.matchMedia()
     media.add('(prefers-reduced-motion: no-preference)', () => {
-      const isMobile = window.matchMedia('(max-width: 700px)').matches
-      const finalScale = isMobile ? 0.77 : 2.74
-      const initialScale = isMobile ? 0.52 : 1
+      const isMobile = window.matchMedia('(max-width: 900px)').matches
+      const getCompositionBounds = () => deviceLayer.getBoundingClientRect()
+      const getMobileScale = () => {
+        const composition = getCompositionBounds()
+        const relativeScale = composition.width * .25 / 155
+        return Math.min(.82, Math.max(.56, relativeScale))
+      }
+      const getMobileStartScale = () => {
+        const composition = getCompositionBounds()
+        const relativeScale = composition.width * .25 / 155
+        return Math.min(.5, Math.max(.28, relativeScale * .495))
+      }
+      const finalScale = isMobile ? getMobileScale : 2.74
+      const initialScale = isMobile ? getMobileStartScale : 1
       const initialRotation = isMobile ? -10 : -9
+
+      const syncMobileAnchor = () => {
+        if (!isMobile) return
+        const composition = getCompositionBounds()
+        handheldAnchor.style.left = `${composition.width * .71}px`
+        handheldAnchor.style.top = `${composition.height * .52}px`
+      }
+
+      syncMobileAnchor()
 
       const timeline = gsap.timeline({
         scrollTrigger: {
@@ -45,8 +65,14 @@ function HeroScene() {
           x: 0,
           y: 0,
         }, {
-          x: () => `${isMobile ? -window.innerWidth * 0.12 : -window.innerWidth * 0.22}px`,
-          y: () => `${isMobile ? window.innerHeight * 0.04 : window.innerHeight * 0.06}px`,
+          x: () => {
+            const composition = getCompositionBounds()
+            return `${-composition.width * (isMobile ? 0.12 : 0.22)}px`
+          },
+          y: () => {
+            const composition = getCompositionBounds()
+            return `${composition.height * (isMobile ? 0.04 : 0.06)}px`
+          },
           duration: 0.9,
         }, 0)
         .fromTo(handheldAnchor, {
@@ -58,7 +84,16 @@ function HeroScene() {
           duration: 1,
         }, 0)
 
-      return () => timeline.kill()
+      const refreshScene = () => {
+        syncMobileAnchor()
+        ScrollTrigger.refresh()
+      }
+      window.addEventListener('resize', refreshScene)
+
+      return () => {
+        window.removeEventListener('resize', refreshScene)
+        timeline.kill()
+      }
     })
 
     return () => media.revert()

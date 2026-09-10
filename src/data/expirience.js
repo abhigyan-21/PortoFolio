@@ -1,18 +1,18 @@
 const experience = [
-	{
-		id: 'software-engineering-intern',
-		title: 'Software Engineering Intern',
-		duration: '2025 - Present',
-		description: 'Building and improving software products through hands-on engineering work.',
-		certificate: '/resume.pdf',
-	},
-	{
-		id: 'ui-ux intern',
-		title: 'UI-UX Intern',
-		duration: '2025 - Present',
-		description: 'Building and improving software products through hands-on engineering work.',
-		certificate: '/resume.pdf',
-	},
-]
+  {
+    id: "ezee-solutions",
+    title: "Frontend Development Intern — Ezee Solutions",
+    duration: "Not specified",
+    description:
+      "Frontend development internship experience at Ezee Solutions."
+  },
+  {
+    id: "zidio",
+    title: "UI/UX Design Trainee — Zidio",
+    duration: "Not specified",
+    description:
+      "Remote internship and training program focused on UI/UX design."
+  }
+];
 
 export default experience

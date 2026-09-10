@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://abhigyan-21.github.io/PortoFolio/sitemap.xml
