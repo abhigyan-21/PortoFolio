@@ -10,16 +10,38 @@ function HeroScene() {
   const stageRef = useRef(null)
 
   useLayoutEffect(() => {
-    const stage = stageRef.current
-    const scene = stage.querySelector('.scene')
-    const deviceLayer = stage.querySelector('.scene-device-layer')
-    const sceneArt = stage.querySelector('.scene-art')
-    const sceneWall = stage.querySelector('.scene-wall')
-    const nameHeading = stage.querySelector('.hero-copy h1')
-    const handheldAnchor = stage.querySelector('.handheld-anchor')
+    let cancelled = false
+    let loadHandler
+    let media
 
-    const media = gsap.matchMedia()
-    media.add('(prefers-reduced-motion: no-preference)', () => {
+    const waitForPageAssets = () => {
+      const pageLoaded = document.readyState === 'complete'
+        ? Promise.resolve()
+        : new Promise((resolve) => {
+          loadHandler = resolve
+          window.addEventListener('load', resolve, { once: true })
+        })
+      const fontsReady = document.fonts?.ready ?? Promise.resolve()
+
+      return Promise.all([pageLoaded, fontsReady])
+    }
+
+    const initializeScene = async () => {
+      await waitForPageAssets()
+      await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))
+
+      if (cancelled) return
+
+      const stage = stageRef.current
+      const scene = stage.querySelector('.scene')
+      const deviceLayer = stage.querySelector('.scene-device-layer')
+      const sceneArt = stage.querySelector('.scene-art')
+      const sceneWall = stage.querySelector('.scene-wall')
+      const nameHeading = stage.querySelector('.hero-copy h1')
+      const handheldAnchor = stage.querySelector('.handheld-anchor')
+
+      media = gsap.matchMedia()
+      media.add('(prefers-reduced-motion: no-preference)', () => {
       const isMobile = window.matchMedia('(max-width: 900px)').matches
       const getCompositionBounds = () => deviceLayer.getBoundingClientRect()
       const getMobileScale = () => {
@@ -94,9 +116,16 @@ function HeroScene() {
         window.removeEventListener('resize', refreshScene)
         timeline.kill()
       }
-    })
+      })
+    }
 
-    return () => media.revert()
+    initializeScene()
+
+    return () => {
+      cancelled = true
+      if (loadHandler) window.removeEventListener('load', loadHandler)
+      media?.revert()
+    }
   }, [])
 
   return (
