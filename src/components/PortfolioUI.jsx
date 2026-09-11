@@ -107,7 +107,7 @@ function ExperienceScreen({ onBack, selectedExperience, onSelectExperience }) {
   if (role) {
     return (
       <div className="portfolio-detail">
-        <ScreenHeader number="04" title={role.title} onBack={() => onSelectExperience(null)} />
+        <ScreenHeader number="07" title={role.title} onBack={() => onSelectExperience(null)} />
         <span className="detail-year">{role.duration}</span>
         <strong>ABOUT</strong>
         <p className="detail-description">{role.description}</p>
@@ -123,6 +123,8 @@ function ExperienceScreen({ onBack, selectedExperience, onSelectExperience }) {
     </div>
   )
 }
+
+
 
 function getStats(forceSync = false, signal) {
   const query = forceSync ? '?forceSync=true' : ''
@@ -173,7 +175,7 @@ function QuestionsSolvedScreen({ onBack }) {
   return (
     <div className="questions-solved-screen">
       <div className="stats-heading">
-        <ScreenHeader number="08" title="QUESTIONS SOLVED" onBack={onBack} />
+        <ScreenHeader number="06" title="QUESTIONS SOLVED" onBack={onBack} />
         <button type="button" className="stats-sync" onClick={handleSync} disabled={isLoading || isSyncing} title="Sync live statistics" aria-label="Sync live statistics">
           {isSyncing ? '...' : '↻'}
         </button>
@@ -214,6 +216,8 @@ function SimpleScreen({ id, onBack }) {
 
   return <div className="portfolio-simple"><ScreenHeader number={content.number} title={content.title} onBack={onBack} />{content.description && <p>{content.description}</p>}{highlight}<button type="button" onClick={onBack}>‹ HOME</button></div>
 }
+
+
 
 function PortfolioUI() {
   const [activeScreen, setActiveScreen] = useState('home')

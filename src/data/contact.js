@@ -1,5 +1,5 @@
 const contact = {
-  number: '07',
+  number: '08',
   title: 'CONTACT',
   description: 'abhigyandutta@yahoo.com',
 }
